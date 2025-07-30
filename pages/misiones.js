@@ -22,7 +22,7 @@ const misiones = [
 ]
 
     
-  ]
+  
 
   return (
     <Layout>
