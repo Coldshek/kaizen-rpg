@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth'
 import { initializeApp } from 'firebase/app'
-import { firebaseConfig } from '../firebase-config'
+import { app } from "../firebase-config";
 
 initializeApp(firebaseConfig)
 const auth = getAuth()
