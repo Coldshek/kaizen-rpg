@@ -1,35 +1,50 @@
-import Link from 'next/link'
-import { useContext } from 'react'
-import { AuthContext } from '../pages/_app'
-import { getAuth, signOut } from 'firebase/auth'
+import Link from 'next/link';
+import { useContext } from 'react';
+import { AuthContext } from '../pages/_app';
+import { getAuth, signOut } from 'firebase/auth';
 
 export default function Layout({ children }) {
-  const user = useContext(AuthContext)
+  const user = useContext(AuthContext);
 
   const cerrarSesion = () => {
-    const auth = getAuth()
+    const auth = getAuth();
     signOut(auth).then(() => {
-      window.location.href = "/login"
-    })
-  }
+      window.location.href = "/login";
+    });
+  };
 
   return (
-    <div style={{ padding: '2rem', fontFamily: 'sans-serif', color: 'white', background: '#121212', minHeight: '100vh' }}>
-      <nav style={{ marginBottom: '2rem' }}>
-        <Link href="/" style={{ marginRight: '1rem' }}>🏠 Inicio</Link>
-        <Link href="/misiones" style={{ marginRight: '1rem' }}>🧭 Misiones</Link>
-        <Link href="/logros" style={{ marginRight: '1rem' }}>🏅 Logros</Link>
-        <Link href="/perfil" style={{ marginRight: '1rem' }}>👤 Perfil</Link>
-        <Link href="/tienda" style={{ marginRight: '1rem' }}>🛒 Tienda</Link>
-        <Link href="/login" style={{ marginRight: '1rem' }}>🔐 Login</Link>
+    <div className="min-h-screen px-8 py-6 font-sans transition-colors duration-300 
+                    bg-white text-black 
+                    dark:bg-gray-900 dark:text-white 
+                    valesquita:bg-[#f8d0e7] valesquita:text-[#831843]">
+      
+      <nav className="mb-6 space-x-4">
+        <Link href="/">🏠 Inicio</Link>
+        <Link href="/misiones">🧭 Misiones</Link>
+        <Link href="/misiones-personalizadas">🛠️ Crear Misión</Link>
+        <Link href="/logros">🏅 Logros</Link>
+        <Link href="/perfil">👤 Perfil</Link>
+        <Link href="/tienda">🛒 Tienda</Link>
+        <Link href="/login">🔐 Login</Link>
+
         {user && (
-          <button onClick={cerrarSesion} style={{ marginLeft: '1rem', background: '#f87171', border: 'none', padding: '0.5rem 1rem', borderRadius: '5px', cursor: 'pointer' }}>
+          <button
+            onClick={cerrarSesion}
+            className="ml-4 bg-red-400 hover:bg-red-500 text-white px-3 py-1 rounded"
+          >
             Cerrar sesión
           </button>
         )}
       </nav>
-      {user && <p style={{ marginBottom: '1rem', color: '#ccc' }}>Conectado como: <strong>{user.email}</strong></p>}
+
+      {user && (
+        <p className="mb-4 text-sm text-gray-500 dark:text-gray-300">
+          Conectado como: <strong>{user.email}</strong>
+        </p>
+      )}
+
       {children}
     </div>
-  )
+  );
 }

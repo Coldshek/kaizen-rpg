@@ -1,6 +1,24 @@
+/* Reset base */
 body {
   margin: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: #121212;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* 🌞 Tema claro (por defecto si no hay clase) */
+html:not(.dark):not(.valesquita) body {
+  background-color: #ffffff;
+  color: #111111;
+}
+
+/* 🌚 Tema oscuro */
+html.dark body {
+  background-color: #121212;
   color: white;
+}
+
+/* 🌸 Tema valesquita */
+html.valesquita body {
+  background-color: #f8d0e7;
+  color: #831843;
 }

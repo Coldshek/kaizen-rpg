@@ -2,7 +2,6 @@ import { useState, useContext } from 'react'
 import { db } from '../firebase-config'
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
 import { AuthContext } from './_app'
-import Layout from '../components/Layout'
 
 export default function MisionesPersonalizadas() {
   const user = useContext(AuthContext)
@@ -12,7 +11,6 @@ export default function MisionesPersonalizadas() {
   const crearMision = async (e) => {
     e.preventDefault()
     if (!user) return alert("Debes iniciar sesión")
-
     if (!titulo || !xp) return alert("Rellena todos los campos")
 
     try {
@@ -35,7 +33,7 @@ export default function MisionesPersonalizadas() {
   }
 
   return (
-    <Layout>
+    <div>
       <h1>Crear Misión Personalizada</h1>
       <form onSubmit={crearMision} style={{ maxWidth: '400px' }}>
         <input
@@ -52,14 +50,19 @@ export default function MisionesPersonalizadas() {
           onChange={(e) => setXp(e.target.value)}
           style={{ width: '100%', marginBottom: '1rem', padding: '0.5rem' }}
         />
-        <button type="submit" style={{
-          backgroundColor: '#fbbf24',
-          border: 'none',
-          padding: '0.5rem 1rem',
-          borderRadius: '5px',
-          cursor: 'pointer'
-        }}>Guardar misión</button>
+        <button
+          type="submit"
+          style={{
+            backgroundColor: '#fbbf24',
+            border: 'none',
+            padding: '0.5rem 1rem',
+            borderRadius: '5px',
+            cursor: 'pointer'
+          }}
+        >
+          Guardar misión
+        </button>
       </form>
-    </Layout>
+    </div>
   )
 }
