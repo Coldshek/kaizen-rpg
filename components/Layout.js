@@ -18,9 +18,22 @@ export default function Layout({ children }) {
                     bg-white text-black 
                     dark:bg-gray-900 dark:text-white 
                     valesquita:bg-[#f8d0e7] valesquita:text-[#831843]">
-      
+
+      {/* ✅ Banner visible para todos */}
+      <div className="relative mb-6 rounded-xl overflow-hidden shadow-lg">
+        <img
+          src="/banner-rpg.jpg"
+          alt="Banner Kaizen RPG"
+          className="w-full h-48 object-cover"
+        />
+        <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+          <h1 className="text-4xl font-extrabold text-white drop-shadow-lg">Kaizen RPG</h1>
+        </div>
+      </div>
+
       <nav className="mb-6 space-x-4">
         <Link href="/">🏠 Inicio</Link>
+        <Link href="/stats">📊 Stats</Link>
         <Link href="/misiones">🧭 Misiones</Link>
         <Link href="/misiones-personalizadas">🛠️ Crear Misión</Link>
         <Link href="/logros">🏅 Logros</Link>

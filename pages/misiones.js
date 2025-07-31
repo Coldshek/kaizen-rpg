@@ -1,4 +1,3 @@
-// pages/misiones.js
 import { useEffect, useState } from 'react'
 import Mision from '../components/Mision'
 import Head from 'next/head'
@@ -9,27 +8,27 @@ export default function Misiones() {
 
   useEffect(() => {
     const lista = [
-      { titulo: "Hidrátate correctamente 💧", xp: 10 },
-      { titulo: "Haz una pausa consciente de 1 minuto 🧘", xp: 5 },
-      { titulo: "Camina 15 minutos seguidos 🚶‍♂️", xp: 10 },
-      { titulo: "Limpia tu escritorio 🧼", xp: 10 },
-      { titulo: "Escribe una idea nueva ✍️", xp: 15 },
-      { titulo: "No mirar el móvil durante una comida 📵", xp: 15 },
-      { titulo: "Organiza tu día con 3 tareas clave 📋", xp: 20 },
-      { titulo: "Haz 10 flexiones o sentadillas 🏋️", xp: 10 },
-      { titulo: "Escucha una canción que te motive 🎶", xp: 5 },
-      { titulo: "Lee 5 páginas de un libro 📖", xp: 10 },
-      { titulo: "Prueba una comida diferente 🍣", xp: 10 },
-      { titulo: "Envía un mensaje a alguien que quieres 💌", xp: 15 },
-      { titulo: "Apaga notificaciones 1 hora 🔕", xp: 20 },
-      { titulo: "Respira profundo 5 minutos 🌬️", xp: 10 },
-      { titulo: "Anota algo que hayas aprendido 📚", xp: 15 },
-      { titulo: "Haz algo creativo (escribe, dibuja...) 🎨", xp: 20 },
-      { titulo: "Ordena una carpeta de tu PC 🗂️", xp: 10 },
-      { titulo: "Saluda a alguien nuevo hoy 🙋", xp: 15 },
-      { titulo: "Evita quejarte durante 1 hora 🤐", xp: 20 },
-      { titulo: "Dúchate con agua fría 🚿", xp: 25 },
-      { titulo: "Haz una buena acción anónima 🕊️", xp: 30 },
+      { titulo: "Hidrátate correctamente 💧", xp: 10, stat: 'energia' },
+      { titulo: "Haz una pausa consciente de 1 minuto 🧘", xp: 5, stat: 'voluntad' },
+      { titulo: "Camina 15 minutos seguidos 🚶‍♂️", xp: 10, stat: 'fuerza' },
+      { titulo: "Limpia tu escritorio 🧼", xp: 10, stat: 'voluntad' },
+      { titulo: "Escribe una idea nueva ✍️", xp: 15, stat: 'inteligencia' },
+      { titulo: "No mirar el móvil durante una comida 📵", xp: 15, stat: 'voluntad' },
+      { titulo: "Organiza tu día con 3 tareas clave 📋", xp: 20, stat: 'sabiduria' },
+      { titulo: "Haz 10 flexiones o sentadillas 🏋️", xp: 10, stat: 'fuerza' },
+      { titulo: "Escucha una canción que te motive 🎶", xp: 5, stat: 'energia' },
+      { titulo: "Lee 5 páginas de un libro 📖", xp: 10, stat: 'sabiduria' },
+      { titulo: "Prueba una comida diferente 🍣", xp: 10, stat: 'energia' },
+      { titulo: "Envía un mensaje a alguien que quieres 💌", xp: 15, stat: 'carisma' },
+      { titulo: "Apaga notificaciones 1 hora 🔕", xp: 20, stat: 'voluntad' },
+      { titulo: "Respira profundo 5 minutos 🌬️", xp: 10, stat: 'voluntad' },
+      { titulo: "Anota algo que hayas aprendido 📚", xp: 15, stat: 'sabiduria' },
+      { titulo: "Haz algo creativo (escribe, dibuja...) 🎨", xp: 20, stat: 'inteligencia' },
+      { titulo: "Ordena una carpeta de tu PC 🗂️", xp: 10, stat: 'voluntad' },
+      { titulo: "Saluda a alguien nuevo hoy 🙋", xp: 15, stat: 'carisma' },
+      { titulo: "Evita quejarte durante 1 hora 🤐", xp: 20, stat: 'voluntad' },
+      { titulo: "Dúchate con agua fría 🚿", xp: 25, stat: 'fuerza' },
+      { titulo: "Haz una buena acción anónima 🕊️", xp: 30, stat: 'carisma' },
     ]
     setMisiones(lista)
   }, [])
@@ -47,7 +46,7 @@ export default function Misiones() {
 
       <div className="mt-6 space-y-4">
         {misiones.map((m, i) => (
-          <Mision key={i} titulo={m.titulo} xp={m.xp} />
+          <Mision key={i} titulo={m.titulo} xp={m.xp} stat={m.stat} />
         ))}
       </div>
     </div>

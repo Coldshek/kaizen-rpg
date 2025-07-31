@@ -1,30 +1,35 @@
-import '../styles/globals.css';
-import { useEffect, useState, createContext } from 'react';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { app } from '../firebase-config';
-import Layout from '../components/Layout';
-import { ThemeProvider } from '../context/ThemeContext'; // 👈 nuevo
+import '../styles/globals.css'
+import { useEffect, useState, createContext } from 'react'
+import { getAuth, onAuthStateChanged } from 'firebase/auth'
+import { app } from '../firebase-config'
+import Layout from '../components/Layout'
+import { ThemeProvider } from '../context/ThemeContext'
+import { StatsProvider } from '../context/StatsContext'
 
-export const AuthContext = createContext(null);
+export const AuthContext = createContext(null)
 
 export default function App({ Component, pageProps }) {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(null)
 
   useEffect(() => {
-    const auth = getAuth(app);
+    const auth = getAuth(app)
+
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
-      setUser(firebaseUser);
-    });
-    return () => unsubscribe();
-  }, []);
+      setUser(firebaseUser)
+    })
+
+    return () => unsubscribe()
+  }, [])
 
   return (
-    <ThemeProvider> {/* 👈 nuevo contenedor para el tema */}
+    <ThemeProvider>
       <AuthContext.Provider value={user}>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
+        <StatsProvider>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </StatsProvider>
       </AuthContext.Provider>
     </ThemeProvider>
-  );
+  )
 }
