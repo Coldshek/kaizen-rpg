@@ -1,7 +1,6 @@
 import { useEffect, useState, useContext } from 'react';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase-config';
-import Layout from '../components/Layout';
 import ThemeSwitcher from '../components/ThemeSwitcher';
 import { AuthContext } from './_app';
 
@@ -28,7 +27,7 @@ export default function Home() {
   const porcentaje = (xpRelativo / 500) * 100;
 
   return (
-    <Layout>
+    <>
       <h1 className="text-2xl font-bold">Kaizen RPG 🌱</h1>
 
       <ThemeSwitcher />
@@ -49,6 +48,6 @@ export default function Home() {
           />
         </div>
       </div>
-    </Layout>
+    </>
   );
 }

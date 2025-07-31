@@ -1,5 +1,3 @@
-// context/ThemeContext.js
-
 import { createContext, useState, useEffect, useContext } from 'react';
 
 export const ThemeContext = createContext();
@@ -8,7 +6,6 @@ export const ThemeProvider = ({ children }) => {
   const [theme, setTheme] = useState('light');
 
   useEffect(() => {
-    // Comprobar si hay un tema guardado en localStorage
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme) {
       setTheme(savedTheme);
@@ -20,7 +17,6 @@ export const ThemeProvider = ({ children }) => {
 
   useEffect(() => {
     localStorage.setItem('theme', theme);
-
     document.documentElement.classList.remove('light', 'dark', 'valesquita');
     document.documentElement.classList.add(theme);
   }, [theme]);
@@ -32,5 +28,5 @@ export const ThemeProvider = ({ children }) => {
   );
 };
 
-// 👇 Añade esto al final
+// 🔧 Aquí está el hook personalizado
 export const useTheme = () => useContext(ThemeContext);
