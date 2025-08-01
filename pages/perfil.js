@@ -11,7 +11,7 @@ import {
 import { db } from '../firebase-config'
 import { AuthContext } from './_app'
 import { useStats } from '../context/StatsContext'
-import StatBar from '../components/StatBar' // ✅ nuevo componente visual
+import StatBar from '../components/StatBar'
 
 export default function Perfil() {
   const user = useContext(AuthContext)
@@ -19,15 +19,18 @@ export default function Perfil() {
   const [jugadorData, setJugadorData] = useState(null)
   const statsContext = useStats()
 
+  if (!user) {
+    return <p className="text-center mt-10 text-gray-400">Cargando datos de usuario...</p>
+  }
+
   if (!statsContext || !statsContext.stats) {
     return <p className="text-center mt-10 text-gray-400">Cargando perfil y stats...</p>
   }
 
   const { stats } = statsContext
 
-  // 🔁 Últimas misiones
   useEffect(() => {
-    if (!user) return
+    if (!user?.uid) return
 
     const q = query(
       collection(db, "jugadores", user.uid, "misiones"),
@@ -46,10 +49,9 @@ export default function Perfil() {
     return () => unsubscribe()
   }, [user])
 
-  // 🧠 Leer logros del documento raíz del jugador
   useEffect(() => {
     const cargarDatosJugador = async () => {
-      if (!user) return
+      if (!user?.uid) return
       const ref = doc(db, "jugadores", user.uid)
       const snap = await getDoc(ref)
       if (snap.exists()) {
@@ -59,7 +61,6 @@ export default function Perfil() {
     cargarDatosJugador()
   }, [user])
 
-  // 🔤 Nombres legibles para los logros
   const renderNombreLogro = (key) => {
     const mapa = {
       primera_mision: "Primera misión completada",
@@ -72,11 +73,9 @@ export default function Perfil() {
     <div className="p-6 max-w-2xl mx-auto bg-white dark:bg-gray-900 text-gray-800 dark:text-white rounded-xl shadow">
       <h1 className="text-3xl font-bold mb-4">👤 Perfil del Jugador</h1>
 
-      {user && (
-        <p className="mb-2">
-          <strong>Email:</strong> {user.email}
-        </p>
-      )}
+      <p className="mb-2">
+        <strong>Email:</strong> {user.email}
+      </p>
 
       <div className="mt-4 mb-6">
         <h2 className="text-xl font-semibold mb-2">📊 Stats actuales</h2>
