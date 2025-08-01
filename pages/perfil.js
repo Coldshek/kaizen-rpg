@@ -1,12 +1,22 @@
 import { useEffect, useState, useContext } from 'react'
-import { collection, query, orderBy, limit, onSnapshot } from 'firebase/firestore'
+import {
+  collection,
+  query,
+  orderBy,
+  limit,
+  onSnapshot,
+  doc,
+  getDoc
+} from 'firebase/firestore'
 import { db } from '../firebase-config'
 import { AuthContext } from './_app'
 import { useStats } from '../context/StatsContext'
+import StatBar from '../components/StatBar' // ✅ nuevo componente visual
 
 export default function Perfil() {
-  const user = useContext(AuthContext)              // ✅ Añadido aquí
+  const user = useContext(AuthContext)
   const [misiones, setMisiones] = useState([])
+  const [jugadorData, setJugadorData] = useState(null)
   const statsContext = useStats()
 
   if (!statsContext || !statsContext.stats) {
@@ -15,6 +25,7 @@ export default function Perfil() {
 
   const { stats } = statsContext
 
+  // 🔁 Últimas misiones
   useEffect(() => {
     if (!user) return
 
@@ -35,6 +46,28 @@ export default function Perfil() {
     return () => unsubscribe()
   }, [user])
 
+  // 🧠 Leer logros del documento raíz del jugador
+  useEffect(() => {
+    const cargarDatosJugador = async () => {
+      if (!user) return
+      const ref = doc(db, "jugadores", user.uid)
+      const snap = await getDoc(ref)
+      if (snap.exists()) {
+        setJugadorData(snap.data())
+      }
+    }
+    cargarDatosJugador()
+  }, [user])
+
+  // 🔤 Nombres legibles para los logros
+  const renderNombreLogro = (key) => {
+    const mapa = {
+      primera_mision: "Primera misión completada",
+      racha_3_dias: "3 días seguidos de misiones",
+    }
+    return mapa[key] || key
+  }
+
   return (
     <div className="p-6 max-w-2xl mx-auto bg-white dark:bg-gray-900 text-gray-800 dark:text-white rounded-xl shadow">
       <h1 className="text-3xl font-bold mb-4">👤 Perfil del Jugador</h1>
@@ -47,16 +80,18 @@ export default function Perfil() {
 
       <div className="mt-4 mb-6">
         <h2 className="text-xl font-semibold mb-2">📊 Stats actuales</h2>
-        <ul className="grid grid-cols-2 gap-2 text-sm">
-          {Object.entries(stats).map(([key, stat]) => (
-            <li key={key}>
-              {stat.label}: Nivel {stat.level} – {stat.xp}/{stat.xpToNext} XP
-            </li>
-          ))}
-        </ul>
+        {Object.entries(stats).map(([key, stat]) => (
+          <StatBar
+            key={key}
+            label={stat.label}
+            level={stat.level}
+            xp={stat.xp}
+            xpToNext={stat.xpToNext}
+          />
+        ))}
       </div>
 
-      <div>
+      <div className="mt-6">
         <h2 className="text-xl font-semibold mb-2">📜 Últimas misiones completadas</h2>
         <ul className="list-disc pl-5 text-sm space-y-1">
           {misiones.map((m) => (
@@ -66,6 +101,19 @@ export default function Perfil() {
           ))}
         </ul>
       </div>
+
+      {jugadorData?.logros && (
+        <div className="mt-6">
+          <h2 className="text-xl font-semibold mb-2">🏅 Logros desbloqueados</h2>
+          <ul className="list-disc pl-5 text-sm space-y-1">
+            {Object.entries(jugadorData.logros).map(([key, valor]) => (
+              <li key={key}>
+                {valor ? "✅" : "🔒"} {renderNombreLogro(key)}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   )
 }

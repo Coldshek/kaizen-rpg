@@ -19,15 +19,17 @@ export default function Layout({ children }) {
                     dark:bg-gray-900 dark:text-white 
                     valesquita:bg-[#f8d0e7] valesquita:text-[#831843]">
 
-      {/* ✅ Banner visible para todos */}
-      <div className="relative mb-6 rounded-xl overflow-hidden shadow-lg">
+      {/* ✅ Banner responsive visible para todos */}
+      <div className="relative mb-6 rounded-xl overflow-hidden shadow-lg w-full" style={{ aspectRatio: '16/6' }}>
         <img
           src="/banner-rpg.jpg"
           alt="Banner Kaizen RPG"
-          className="w-full h-48 object-cover"
+          className="w-full h-full object-cover object-center"
         />
-        <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
-          <h1 className="text-4xl font-extrabold text-white drop-shadow-lg">Kaizen RPG</h1>
+        <div className="absolute inset-0 bg-black/40 flex items-center justify-center px-4 text-center">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white drop-shadow-lg">
+            Kaizen RPG
+          </h1>
         </div>
       </div>
 

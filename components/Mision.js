@@ -1,18 +1,19 @@
 import { useContext } from 'react'
 import { AuthContext } from '../pages/_app'
+import { useStats } from '../context/StatsContext'
 import {
   collection,
   addDoc,
   serverTimestamp,
   doc,
   getDoc,
-  setDoc,
-  updateDoc
+  setDoc
 } from 'firebase/firestore'
 import { db } from '../firebase-config'
 
-export default function Mision({ titulo, xp }) {
+export default function Mision({ titulo, xp, stat }) {
   const user = useContext(AuthContext)
+  const { ganarXP } = useStats()
 
   const completarMision = async () => {
     if (!user) {
@@ -25,14 +26,21 @@ export default function Mision({ titulo, xp }) {
       const now = new Date()
       const fechaStr = now.toISOString().split('T')[0]
 
-      // Guardar misión en subcolección del usuario
+      // 1️⃣ Sumar XP al stat correspondiente
+      if (stat && ganarXP) {
+        await ganarXP(stat, xp)
+      }
+
+      // 2️⃣ Guardar la misión completada en la subcolección
       await addDoc(collection(db, "jugadores", uid, "misiones"), {
         titulo,
         xp,
+        stat,
         completado_en: serverTimestamp(),
         fecha: fechaStr
       })
 
+      // 3️⃣ Actualizar datos generales: XP total, racha, logros
       const jugadorRef = doc(db, "jugadores", uid)
       const jugadorSnap = await getDoc(jugadorRef)
 
@@ -55,7 +63,6 @@ export default function Mision({ titulo, xp }) {
           racha = (data.racha || 1) + 1
         }
 
-        ultimaFecha = fechaStr
         logros = { ...data.logros }
 
         if (!logros.primera_mision) {
@@ -73,9 +80,9 @@ export default function Mision({ titulo, xp }) {
         ultima_fecha: ultimaFecha,
         racha,
         logros
-      })
+      }, { merge: true })
 
-      alert(`¡Misión "${titulo}" completada! Ganaste ${xp} XP.`)
+      alert(`¡Misión "${titulo}" completada! +${xp} XP en ${stat.toUpperCase()}`)
     } catch (e) {
       console.error("Error al guardar misión o XP: ", e)
       alert("Hubo un error al guardar la misión.")
@@ -91,7 +98,7 @@ export default function Mision({ titulo, xp }) {
       marginBottom: '1rem'
     }}>
       <h3>{titulo}</h3>
-      <p>Recompensa: {xp} XP</p>
+      <p>Recompensa: {xp} XP → {stat?.toUpperCase()}</p>
       <button
         onClick={completarMision}
         style={{
