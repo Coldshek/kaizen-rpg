@@ -2,8 +2,7 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/perfil": "pages/perfil.js",
-  "/": "pages/index.js",
-  "/logros": "pages/logros.js",
-  "/misiones": "pages/misiones.js"
+  "/misiones": "pages/misiones.js",
+  "/casino": "pages/casino.js",
+  "/logros": "pages/logros.js"
 }

@@ -12,6 +12,7 @@ import { db } from '../firebase-config'
 import { AuthContext } from './_app'
 import { useStats } from '../context/StatsContext'
 import StatBar from '../components/StatBar'
+import StatProgressCard from '../components/StatProgressCard'
 
 export default function Perfil() {
   const user = useContext(AuthContext)
@@ -73,12 +74,17 @@ export default function Perfil() {
     <div className="p-6 max-w-2xl mx-auto bg-white dark:bg-gray-900 text-gray-800 dark:text-white rounded-xl shadow">
       <h1 className="text-3xl font-bold mb-4">👤 Perfil del Jugador</h1>
 
-      <p className="mb-2">
-        <strong>Email:</strong> {user.email}
-      </p>
+      <p className="mb-2"><strong>Email:</strong> {user.email}</p>
+
+      {jugadorData?.oro !== undefined && (
+        <p className="mb-4 text-lg font-semibold text-yellow-600 dark:text-yellow-400">
+          💰 Oro: {jugadorData.oro}
+        </p>
+      )}
 
       <div className="mt-4 mb-6">
         <h2 className="text-xl font-semibold mb-2">📊 Stats actuales</h2>
+
         {Object.entries(stats).map(([key, stat]) => (
           <StatBar
             key={key}
@@ -88,6 +94,9 @@ export default function Perfil() {
             xpToNext={stat.xpToNext}
           />
         ))}
+
+        {/* También puedes usar esta si prefieres la versión visual */}
+        {/* <StatProgressCard stats={stats} /> */}
       </div>
 
       <div className="mt-6">
